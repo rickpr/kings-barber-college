@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import github from "../img/github-icon.svg";
 import logo from "../img/logo.svg";
+import NavbarLink from "./NavbarLink";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
@@ -30,39 +31,15 @@ const Navbar = () => {
         </div>
         <ul
           id="navMenu"
-          className={` navbar-start has-text-centered navbar-menu ${
+          className={`navbar-start has-text-centered navbar-menu ${
             isActive && "is-active"
           }`}
         >
-          {/* TODO: inline override of padding is a result of refactoring
-                to a ul for accessibilty purposes, would like to see a css
-                re-write that makes this unneccesary.
-             */}
-          <li className="navbar-item" style={{ padding: "0px" }}>
-            <Link className="navbar-item" to="/about">
-              About
-            </Link>
-          </li>
-          <li className="navbar-item" style={{ padding: "0px" }}>
-            <Link className="navbar-item" to="/products">
-              Products
-            </Link>
-          </li>
-          <li className="navbar-item" style={{ padding: "0px" }}>
-            <Link className="navbar-item" to="/blog">
-              Blog
-            </Link>
-          </li>
-          <li className="navbar-item" style={{ padding: "0px" }}>
-            <Link className="navbar-item" to="/contact">
-              Contact
-            </Link>
-          </li>
-          <li className="navbar-item" style={{ padding: "0px" }}>
-            <Link className="navbar-item" to="/contact/examples">
-              Form Examples
-            </Link>
-          </li>
+          <NavbarLink to="/about" text="About" />
+          <NavbarLink to="/products" text="Products" />
+          <NavbarLink to="/blog" text="Blog" />
+          <NavbarLink to="/contact" text="Contact" />
+          <NavbarLink to="/contact/examples" text="Form Examples" />
           <li className="navbar-end has-text-centered">
             <a
               className="navbar-item"
