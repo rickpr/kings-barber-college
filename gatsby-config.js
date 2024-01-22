@@ -1,4 +1,4 @@
-import path from 'path'
+const path = require('path')
 
 module.exports = {
   siteMetadata: {
@@ -63,6 +63,10 @@ module.exports = {
           }
         ]
       }
+    },
+    {
+      resolve: 'gatsby-plugin-google-fonts',
+      options: { fonts: ['barlow', 'work sans'] }
     },
     {
       resolve: 'gatsby-plugin-decap-cms',

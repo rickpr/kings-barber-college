@@ -1,4 +1,5 @@
-import * as React from 'react'
+import { omit, isUndefined } from 'lodash'
+import React, { useState } from 'react'
 import { navigate } from 'gatsby-link'
 import Layout from '../../components/Layout'
 
@@ -12,98 +13,87 @@ function encode (data) {
   return formData
 }
 
-export default class Contact extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {}
-    this.handleChange = this.handleChange.bind(this)
-    this.handleAttachment = this.handleAttachment.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
+export default function Contact () {
+  const [botField, setBotField] = useState()
+  const [name, setName] = useState()
+  const [attachment, setAttachment] = useState()
 
-  handleChange (e) {
-    this.setState({ [e.target.name]: e.target.value })
-  }
-
-  handleAttachment (e) {
-    this.setState({ [e.target.name]: e.target.files[0] })
-  }
-
-  handleSubmit (e) {
-    e.preventDefault()
-    const form = e.target
-    fetch('/', {
-      method: 'POST',
-      body: encode({
-        'form-name': form.getAttribute('name'),
-        ...this.state
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const form = event.target
+    try {
+      await fetch('/', {
+        method: 'POST',
+        body: encode({
+          'form-name': form.getAttribute('name'),
+          ...omit({ 'bot-field': botField, name, attachment }, isUndefined)
+        })
       })
-    })
-      .then(() => navigate(form.getAttribute('action')))
-      .catch((error) => alert(error))
+      navigate(form.getAttribute('action'))
+    } catch (error) {
+      alert(error)
+    }
   }
 
-  render () {
-    return (
-      <Layout>
-        <section className="section">
-          <div className="container">
-            <div className="content">
-              <h1>File Upload</h1>
-              <form
-                name="file-upload"
-                method="post"
-                action="/contact/thanks/"
-                data-netlify="true"
-                data-netlify-honeypot="bot-field"
-                onSubmit={this.handleSubmit}
-              >
-                {/* The `form-name` hidden field is required to support form submissions without JavaScript */}
-                <input type="hidden" name="form-name" value="file-upload" />
-                <div hidden>
-                  <label>
-                    Don’t fill this out:{' '}
-                    <input name="bot-field" onChange={this.handleChange} />
-                  </label>
+  return (
+    <Layout>
+      <section className="section">
+        <div className="container">
+          <div className="content">
+            <h1>File Upload</h1>
+            <form
+              name="file-upload"
+              method="post"
+              action="/contact/thanks/"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+            >
+              {/* The `form-name` hidden field is required to support form submissions without JavaScript */}
+              <input type="hidden" name="form-name" value="file-upload" />
+              <div hidden>
+                <label>
+                  Don’t fill this out:{' '}
+                  <input name="bot-field" onChange={(e) => setBotField(e.target.value)} />
+                </label>
+              </div>
+              <div className="field">
+                <label className="label" htmlFor="name">
+                  Your name
+                </label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type='text'
+                    name='name'
+                    onChange={(e) => setName(e.target.value)}
+                    id='name'
+                    required={true}
+                  />
                 </div>
-                <div className="field">
-                  <label className="label" htmlFor="name">
-                    Your name
-                  </label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type={'text'}
-                      name={'name'}
-                      onChange={this.handleChange}
-                      id={'name'}
-                      required={true}
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="file">
+              </div>
+              <div className="field">
+                <div className="file">
+                  <label className="file-label" htmlFor="attachment">
                     <input
                       className="file-input"
                       type="file"
                       name="attachment"
-                      onChange={this.handleAttachment}
+                      onChange={(e) => setAttachment(e.target.value)}
                     />
-                    <span className="file-cta">
-                      <span className="file-label">Choose a file…</span>
-                    </span>
-                  </div>
+                    <span>Choose a file…</span>
+                  </label>
                 </div>
-                <div className="field">
-                  <button className="button is-link" type="submit">
-                    Send
-                  </button>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div className="field">
+                <button className="button is-link" type="submit">
+                  Send
+                </button>
+              </div>
+            </form>
           </div>
-        </section>
-      </Layout>
-    )
-  }
+        </div>
+      </section>
+    </Layout>
+  )
 }
