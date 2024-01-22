@@ -1,16 +1,18 @@
-import * as React from "react";
-import { kebabCase } from "lodash";
-import { Helmet } from "react-helmet";
-import { Link, graphql } from "gatsby";
-import Layout from "../../components/Layout";
+import { Link, graphql } from 'gatsby'
+import { kebabCase } from 'lodash'
+import PropTypes from 'prop-types'
+import * as React from 'react'
+import { Helmet } from 'react-helmet'
+
+import Layout from '../../components/Layout'
 
 const TagsPage = ({
   data: {
     allMarkdownRemark: { group },
     site: {
-      siteMetadata: { title },
-    },
-  },
+      siteMetadata: { title }
+    }
+  }
 }) => (
   <Layout>
     <section className="section">
@@ -19,7 +21,7 @@ const TagsPage = ({
         <div className="columns">
           <div
             className="column is-10 is-offset-1"
-            style={{ marginBottom: "6rem" }}
+            style={{ marginBottom: '6rem' }}
           >
             <h1 className="title is-size-2 is-bold-light">Tags</h1>
             <ul className="taglist">
@@ -36,9 +38,27 @@ const TagsPage = ({
       </div>
     </section>
   </Layout>
-);
+)
 
-export default TagsPage;
+TagsPage.propTypes = {
+  data: PropTypes.shape({
+    allMarkdownRemark: PropTypes.shape({
+      group: PropTypes.arrayOf(
+        PropTypes.shape({
+          fieldValue: PropTypes.string.isRequired,
+          totalCount: PropTypes.number.isRequired
+        }).isRequired
+      )
+    }),
+    site: PropTypes.shape({
+      siteMetadata: PropTypes.shape({
+        title: PropTypes.string.isRequired
+      })
+    })
+  })
+}
+
+export default TagsPage
 
 export const tagPageQuery = graphql`
   query TagsQuery {
@@ -54,4 +74,4 @@ export const tagPageQuery = graphql`
       }
     }
   }
-`;
+`

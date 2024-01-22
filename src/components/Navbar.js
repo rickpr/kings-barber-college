@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "gatsby";
-import github from "../img/github-icon.svg";
-import logo from "../img/logo.svg";
-import NavbarLink from "./NavbarLink";
+import React, { useState } from 'react'
+import { Link } from 'gatsby'
+import github from '../img/github-icon.svg'
+import logo from '../img/logo.svg'
+import NavbarLink from './NavbarLink'
 
 const Navbar = () => {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(false)
 
   return (
     <nav
@@ -16,11 +16,11 @@ const Navbar = () => {
       <div className="container">
         <div className="navbar-brand">
           <Link to="/" className="navbar-item" title="Logo">
-            <img src={logo} alt="Kaldi" style={{ width: "88px" }} />
+            <img src={logo} alt="Kaldi" style={{ width: '88px' }} />
           </Link>
           {/* Hamburger menu */}
           <button
-            className={`navbar-burger burger ${isActive && "is-active"}`}
+            className={`navbar-burger burger ${isActive && 'is-active'}`}
             aria-expanded={isActive}
             onClick={() => setIsActive(!isActive)}
           >
@@ -32,7 +32,7 @@ const Navbar = () => {
         <ul
           id="navMenu"
           className={`navbar-start has-text-centered navbar-menu ${
-            isActive && "is-active"
+            isActive && 'is-active'
           }`}
         >
           <NavbarLink to="/about" text="About" />
@@ -55,7 +55,7 @@ const Navbar = () => {
         </ul>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

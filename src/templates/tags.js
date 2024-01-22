@@ -1,28 +1,29 @@
-import * as React from "react";
-import { Helmet } from "react-helmet";
-import { Link, graphql } from "gatsby";
-import Layout from "../components/Layout";
+import * as React from 'react'
+import { Helmet } from 'react-helmet'
+import PropTypes from 'prop-types'
+import { Link, graphql } from 'gatsby'
 
-const TagRoute = (props) =>  {
+import Layout from '../components/Layout'
 
-    const posts = props.data.allMarkdownRemark.edges;
+const TagRoute = (props) => {
+  const posts = props.data.allMarkdownRemark.edges
 
-    const postLinks = posts.map((post) => (
+  const postLinks = posts.map((post) => (
       <li key={post.node.fields.slug}>
         <Link to={post.node.fields.slug}>
           <h2 className="is-size-2">{post.node.frontmatter.title}</h2>
         </Link>
       </li>
-    ));
+  ))
 
-    const { tag } = props.pageContext;
-    const { title } = props.data.site.siteMetadata;
-    const { totalCount } = props.data.allMarkdownRemark;
-    const tagHeader = `${totalCount} post${
-      totalCount === 1 ? "" : "s"
-    } tagged with “${tag}”`;
+  const { tag } = props.pageContext
+  const { title } = props.data.site.siteMetadata
+  const { totalCount } = props.data.allMarkdownRemark
+  const tagHeader = `${totalCount} post${
+      totalCount === 1 ? '' : 's'
+    } tagged with “${tag}”`
 
-    return (
+  return (
       <Layout>
         <section className="section">
           <Helmet title={`${tag} | ${title}`} />
@@ -30,7 +31,7 @@ const TagRoute = (props) =>  {
             <div className="columns">
               <div
                 className="column is-10 is-offset-1"
-                style={{ marginBottom: "6rem" }}
+                style={{ marginBottom: '6rem' }}
               >
                 <h3 className="title is-size-4 is-bold-light">{tagHeader}</h3>
                 <ul className="taglist">{postLinks}</ul>
@@ -42,10 +43,27 @@ const TagRoute = (props) =>  {
           </div>
         </section>
       </Layout>
-    );
+  )
 }
 
-export default TagRoute;
+TagRoute.propTypes = {
+  pageContext: PropTypes.shape({
+    tag: PropTypes.string.isRequired
+  }),
+  data: PropTypes.shape({
+    allMarkdownRemark: PropTypes.shape({
+      edges: PropTypes.array,
+      totalCount: PropTypes.number
+    }),
+    site: PropTypes.shape({
+      siteMetadata: PropTypes.shape({
+        title: PropTypes.string.isRequired
+      })
+    })
+  })
+}
+
+export default TagRoute
 
 export const tagPageQuery = graphql`
   query TagPage($tag: String) {
@@ -72,4 +90,4 @@ export const tagPageQuery = graphql`
       }
     }
   }
-`;
+`

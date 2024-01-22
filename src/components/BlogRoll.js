@@ -3,10 +3,8 @@ import PropTypes from 'prop-types'
 import { Link, graphql, StaticQuery } from 'gatsby'
 import PreviewCompatibleImage from './PreviewCompatibleImage'
 
-
 const BlogRollTemplate = (props) => {
-  
-  const { edges: posts } = props.data.allMarkdownRemark;
+  const { edges: posts } = props.data.allMarkdownRemark
 
   return (
     <div className="columns is-multiline">
@@ -30,7 +28,7 @@ const BlogRollTemplate = (props) => {
                             .gatsbyImageData.width,
                         height:
                           post.frontmatter.featuredimage.childImageSharp
-                            .gatsbyImageData.height,
+                            .gatsbyImageData.height
                       }}
                     />
                   </div>
@@ -63,16 +61,15 @@ const BlogRollTemplate = (props) => {
   )
 }
 
-BlogRoll.propTypes = {
+BlogRollTemplate.propTypes = {
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
-      edges: PropTypes.array,
-    }),
-  }),
+      edges: PropTypes.array
+    })
+  })
 }
 
-
-export default function BlogRoll() {
+export default function BlogRoll () {
   return (
     <StaticQuery
       query={graphql`
@@ -111,5 +108,5 @@ export default function BlogRoll() {
       `}
       render={(data, count) => <BlogRollTemplate data={data} count={count} />}
     />
-  );
+  )
 }
